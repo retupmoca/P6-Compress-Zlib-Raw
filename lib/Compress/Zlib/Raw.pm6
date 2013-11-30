@@ -2,9 +2,11 @@ use v6;
 module Compress::Zlib::Raw;
 
 use NativeCall;
+use soft; # for now
+use Inline;
 
 # structs
-class z_stream is repr('CStruct') {
+class z_stream is repr('CStruct') is export {
     has CArray[int8] $.next-in;
     has int32 $.avail-in;
     has int $.total-in;
@@ -25,7 +27,7 @@ class z_stream is repr('CStruct') {
     has int $.reserved;
 };
 
-class gz_header is repr('CStruct') {
+class gz_header is repr('CStruct') is export {
     has int32 $.text;
     has int $.time;
     has int32 $.xflags;
@@ -91,14 +93,20 @@ constant Z_UNKNOWN = 2;
 constant Z_DEFLATED = 8;
 
 # functions
-sub zlibVersion() returns Str is native('libz') { * }
+sub zlibVersion() returns Str is encoded('ascii') is native('libz.so.1') is export { * }
 
-sub deflateInit(z_stream, int32) returns int32 is native('libz') { * }
-sub deflate(z_stream, int32) returns int32 is native('libz') { * }
-sub deflateEnd(z_stream) returns int32 is native('libz') { * }
+sub deflateInit_(z_stream, int32, Str is encoded('ascii'), int32) returns int32 is native('libz.so.1') { * }
+sub deflateInit(z_stream $stream, int32 $level) is export {
+    return deflateInit_($stream, $level, ZLIB_VERSION, 112); # 112 == sizeof z_stream (64 bit linux)
+}
+sub deflate(z_stream, int32) returns int32 is native('libz.so.1') is export { * }
+sub deflateEnd(z_stream) returns int32 is native('libz.so.1') is export { * }
 
-sub inflateInit(z_stream) returns int32 is native('libz') { * }
-sub inflate(z_stream, int32) returns int32 is native('libz') { * }
-sub inflateEnd(z_stream) returns int32 is native('libz') { * }
+sub inflateInit_(z_stream, Str is encoded('ascii'), int32) returns int32 is native('libz.so.1') is export { * }
+sub inflateInit(z_stream $stream) is export {
+    return inflateInit_($stream, ZLIB_VERSION, 112);
+}
+sub inflate(z_stream, int32) returns int32 is native('libz.so.1') is export { * }
+sub inflateEnd(z_stream) returns int32 is native('libz.so.1') is export { * }
 
 
