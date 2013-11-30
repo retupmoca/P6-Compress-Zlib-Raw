@@ -2,8 +2,6 @@ use v6;
 module Compress::Zlib::Raw;
 
 use NativeCall;
-use soft; # for now
-use Inline;
 
 # structs
 class z_stream is repr('CStruct') is export {
@@ -102,7 +100,7 @@ sub deflateInit(z_stream $stream, int32 $level) is export {
 sub deflate(z_stream, int32) returns int32 is native('libz.so.1') is export { * }
 sub deflateEnd(z_stream) returns int32 is native('libz.so.1') is export { * }
 
-sub inflateInit_(z_stream, Str is encoded('ascii'), int32) returns int32 is native('libz.so.1') is export { * }
+sub inflateInit_(z_stream, Str is encoded('ascii'), int32) returns int32 is native('libz.so.1') { * }
 sub inflateInit(z_stream $stream) is export {
     return inflateInit_($stream, ZLIB_VERSION, 112);
 }
