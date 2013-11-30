@@ -6,7 +6,7 @@ use NativeCall;
 # structs
 class z_stream is repr('CStruct') {
     has CArray[int8] $.next-in;
-    has int32 $.aval-in;
+    has int32 $.avail-in;
     has int $.total-in;
 
     has CArray[int8] $.next-out;
@@ -34,7 +34,7 @@ class gz_header is repr('CStruct') {
     has int32 $.extra_len;
     has int32 $.extra_max;
     has Str $.name;
-    has int32 name_max;
+    has int32 $.name_max;
     has Str $.comment;
     has int32 $.comm_max;
     has int32 $.hcrc;
