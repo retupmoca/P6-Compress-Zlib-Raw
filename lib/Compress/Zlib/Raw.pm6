@@ -126,7 +126,7 @@ sub deflateSetHeader(z_stream, gz_header) returns int32 is native('libz.so.1') i
 
 sub inflateInit2_(z_stream, int32, int32) returns int32 is native('libz.so.1') { * }
 sub inflateInit2(z_stream $strm, int32 $windowbits) is export {
-    return inflateInit2($strm, $windowbits, 112);
+    return inflateInit2_($strm, $windowbits, 112);
 }
 sub inflateSetDictionary(z_stream, CArray[int8], int32) returns int32 is native('libz.so.1') is export { * }
 sub inflateGetDictionary(z_stream, CArray[int8], CArray[int32]) returns int32 is native('libz.so.1') is export { * }
@@ -154,31 +154,33 @@ sub compressBound(int) returns int is native('libz.so.1') is export { * }
 sub uncompress(CArray[int8], CArray[int], CArray[int8], int) returns int32 is native('libz.so.1') is export { * }
 
 # gzip file access functions
-#
-# gzopen
-# gzdopen
-# gzbuffer
-# gzsetparams
-# gzread
-# gzwrite
-# gzprintf
-# gzputs
-# gzgets
-# gzputc
-# gzgetc
-# gzungetc
-# gzflush
-# gzseek
-# gzrewind
-# gztell
-# gzoffset
-# gzeof
-# gzdirect
-# gzclose
-# gzclose_r
-# gzclose_w
-# gzerror
-# gzclearerr
+
+class gzFile is repr('CPointer') { }
+
+sub gzopen(Str is encoded('ascii'), Str is encoded('ascii')) returns gzFile is native('libz.so.1') is export { * }
+sub gzdopen(int32, Str is encoded('ascii')) returns gzFile is native('libz.so.1') is export { * }
+sub gzbuffer(gzFile, int32) returns int32 is native('libz.so.1') is export { * }
+sub gzsetparams(gzFile, int32, int32) returns int32 is native('libz.so.1') is export { * }
+sub gzread(gzFile, CArray[int8], int32) returns int32 is native('libz.so.1') is export { * }
+sub gzwrite(gzFile, CArray[int8], int32) returns int32 is native('libz.so.1') is export { * }
+# gzprintf # I have no idea how to do variable number of args
+sub gzputs(gzFile, Str is encoded('ascii')) returns int32 is native('libz.so.1') is export { * }
+sub gzgets(gzFile, CArray[int8], int32) returns Str is encoded('ascii') is native('libz.so.1') is export { * }
+sub gzputc(gzFile, int32) returns int32 is native('libz.so.1') is export { * }
+sub gzgetc(gzFile) returns int32 is native('libz.so.1') is export { * }
+sub gzungetc(int32, gzFile) returns int32 is native('libz.so.1') is export { * }
+sub gzflush(gzFile, int32) returns int32 is native('libz.so.1') is export { * }
+sub gzseek(gzFile, int32, int32) returns int32 is native('libz.so.1') is export { * }
+sub gzrewind(gzFile) returns int32 is native('libz.so.1') is export { * }
+sub gztell(gzFile) returns int32 is native('libz.so.1') is export { * }
+sub gzoffset(gzFile) returns int32 is native('libz.so.1') is export { * }
+sub gzeof(gzFile) returns int32 is native('libz.so.1') is export { * }
+sub gzdirect(gzFile) returns int32 is native('libz.so.1') is export { * }
+sub gzclose(gzFile) returns int32 is native('libz.so.1') is export { * }
+sub gzclose_r(gzFile) returns int32 is native('libz.so.1') is export { * }
+sub gzclose_w(gzFile) returns int32 is native('libz.so.1') is export { * }
+sub gzerror(gzFile, CArray[int32]) returns Str is encoded('ascii') is native('libz.so.1') is export { * }
+sub gzclearerr(gzFile) is native('libz.so.1') is export { * }
 
 # checksum functions
 #
