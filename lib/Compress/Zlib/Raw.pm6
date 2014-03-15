@@ -90,7 +90,7 @@ constant Z_UNKNOWN = 2;
 # deflate compression method
 constant Z_DEFLATED = 8;
 
-# functions
+# basic functions
 sub zlibVersion() returns Str is encoded('ascii') is native('libz.so.1') is export { * }
 
 sub deflateInit_(z_stream, int32, Str is encoded('ascii'), int32) returns int32 is native('libz.so.1') { * }
@@ -107,4 +107,93 @@ sub inflateInit(z_stream $stream) is export {
 sub inflate(z_stream, int32) returns int32 is native('libz.so.1') is export { * }
 sub inflateEnd(z_stream) returns int32 is native('libz.so.1') is export { * }
 
+# advanced functions
 
+sub deflateInit2_(z_stream, int32, int32, int32, int32, int32, int32) returns int32 is native('libz.so.1') { * }
+sub deflateInit2(z_stream $strm, int32 $level, int32 $method, int32 $windowbits, int32 $memlevel, int32 $strategy) is export {
+    return deflateInit2_($strm, $level, $method, $windowbits, $memlevel, $strategy, 112);
+}
+sub deflateSetDictionary(z_stream, CArray[int8], int32) returns int32 is native('libz.so.1') is export { * }
+sub deflateCopy(z_stream, z_stream) returns int32 is native('libz.so.1') is export { * }
+sub deflateReset(z_stream) returns int32 is native('libz.so.1') is export { * }
+sub deflateParams(z_stream, int32, int32) returns int32 is native('libz.so.1') is export { * }
+sub deflateTune(z_stream, int32, int32, int32, int32) returns int32 is native('libz.so.1') is export { * }
+sub deflateBound(z_stream, int) returns int is native('libz.so.1') is export { * }
+# arguments are actually (z_stream, unsigned*, int*)
+sub deflatePending(z_stream, CArray[int32], CArray[int32]) returns int32 is native('libz.so.1') is export { * }
+sub deflatePrime(z_stream, int32, int32) returns int32 is native('libz.so.1') is export { * }
+sub deflateSetHeader(z_stream, gz_header) returns int32 is native('libz.so.1') is export { * }
+
+sub inflateInit2_(z_stream, int32, int32) returns int32 is native('libz.so.1') { * }
+sub inflateInit2(z_stream $strm, int32 $windowbits) is export {
+    return inflateInit2($strm, $windowbits, 112);
+}
+sub inflateSetDictionary(z_stream, CArray[int8], int32) returns int32 is native('libz.so.1') is export { * }
+sub inflateGetDictionary(z_stream, CArray[int8], CArray[int32]) returns int32 is native('libz.so.1') is export { * }
+sub inflateSync(z_stream) returns int32 is native('libz.so.1') is export { * }
+sub inflateCopy(z_stream, z_stream) returns int32 is native('libz.so.1') is export { * }
+sub inflateReset(z_stream) returns int32 is native('libz.so.1') is export { * }
+sub inflateReset2(z_stream, int32) returns int32 is native('libz.so.1') is export { * }
+sub inflatePrime(z_stream, int32, int32) returns int32 is native('libz.so.1') is export { * }
+sub inflateMark(z_stream) returns int is native('libz.so.1') is export { * }
+sub inflateGetHeader(z_stream, gz_header) returns int32 is native('libz.so.1') is export { * }
+sub inflateBackInit(z_stream, int32, CArray[int8]) returns int32 is native('libz.so.1') is export { * }
+sub inflateBack(z_stream, Callable, OpaquePointer, Callable, OpaquePointer) returns int32 is native('libz.so.1') is export { * }
+sub inflateBackEnd(z_stream) returns int32 is native('libz.so.1') is export { * }
+
+sub zlibCompileFlags() returns int is native('libz.so.1') is export { * }
+
+# utility functions
+
+#second argument is actually long*, but I don't know how to do a pointer to a long
+sub compress(CArray[int8], CArray[int], CArray[int8], int) returns int32 is native('libz.so.1') is export { * }
+sub compress2(CArray[int8], CArray[int], CArray[int8], int, int32) returns int32 is native('libz.so.1') is export { * }
+sub compressBound(int) returns int is native('libz.so.1') is export { * }
+
+#second argument: see note above
+sub uncompress(CArray[int8], CArray[int], CArray[int8], int) returns int32 is native('libz.so.1') is export { * }
+
+# gzip file access functions
+#
+# gzopen
+# gzdopen
+# gzbuffer
+# gzsetparams
+# gzread
+# gzwrite
+# gzprintf
+# gzputs
+# gzgets
+# gzputc
+# gzgetc
+# gzungetc
+# gzflush
+# gzseek
+# gzrewind
+# gztell
+# gzoffset
+# gzeof
+# gzdirect
+# gzclose
+# gzclose_r
+# gzclose_w
+# gzerror
+# gzclearerr
+
+# checksum functions
+#
+sub adler32(int, CArray[int8], int32) returns int is native('libz.so.1') is export { * }
+sub adler32_combine(int, int, int32) returns int is native('libz.so.1') is export { * }
+sub crc32(int, CArray[int8], int32) returns int is native('libz.so.1') is export { * }
+sub crc32_combine(int, int, int32) returns int is native('libz.so.1') is export { * }
+
+# undocumented functions
+#
+# zError
+# inflateSyncPoint
+# get_crc_table
+# inflateUndermine
+# inflateResetKeep
+# deflateResetKeep
+# gzopen_w
+# gzvprintf
