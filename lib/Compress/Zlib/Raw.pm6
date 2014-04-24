@@ -23,6 +23,16 @@ our class z_stream is repr('CStruct') is export {
     has int32 $.data-type;
     has int $.adler;
     has int $.reserved;
+
+    method set-input($stuff){
+        $!next-in := $stuff;
+        $!avail-in = $stuff.elems;
+    }
+
+    method set-output($stuff){
+        $!next-out := $stuff;
+        $!avail-out = $stuff.elems;
+    }
 };
 
 our class gz_header is repr('CStruct') is export {
