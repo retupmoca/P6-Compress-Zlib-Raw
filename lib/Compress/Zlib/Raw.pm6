@@ -5,11 +5,11 @@ use NativeCall;
 
 # structs
 our class z_stream is repr('CStruct') is export {
-    has CArray[int8] $.next-in;
+    has CArray $.next-in;
     has int32 $.avail-in;
     has int $.total-in;
 
-    has CArray[int8] $.next-out;
+    has CArray $.next-out;
     has int32 $.avail-out;
     has int $.total-out;
 
@@ -24,14 +24,14 @@ our class z_stream is repr('CStruct') is export {
     has int $.adler;
     has int $.reserved;
 
-    method set-input($stuff){
+    method set-input(CArray $stuff, $size){
         $!next-in := $stuff;
-        $!avail-in = $stuff.elems;
+        $!avail-in = $size;
     }
 
-    method set-output($stuff){
+    method set-output(CArray $stuff, $size){
         $!next-out := $stuff;
-        $!avail-out = $stuff.elems;
+        $!avail-out = $size;
     }
 };
 
