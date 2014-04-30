@@ -119,9 +119,9 @@ our sub inflateEnd(z_stream) returns int32 is native('libz.so.1') is export { * 
 
 # advanced functions
 
-our sub deflateInit2_(z_stream, int32, int32, int32, int32, int32, int32) returns int32 is native('libz.so.1') { * }
+our sub deflateInit2_(z_stream, int32, int32, int32, int32, int32, Str is encoded('ascii'), int32) returns int32 is native('libz.so.1') { * }
 our sub deflateInit2(z_stream $strm, int32 $level, int32 $method, int32 $windowbits, int32 $memlevel, int32 $strategy) is export {
-    return deflateInit2_($strm, $level, $method, $windowbits, $memlevel, $strategy, 112);
+    return deflateInit2_($strm, $level, $method, $windowbits, $memlevel, $strategy, ZLIB_VERSION, 112);
 }
 our sub deflateSetDictionary(z_stream, CArray[int8], int32) returns int32 is native('libz.so.1') is export { * }
 our sub deflateCopy(z_stream, z_stream) returns int32 is native('libz.so.1') is export { * }
@@ -134,9 +134,9 @@ our sub deflatePending(z_stream, CArray[int32], CArray[int32]) returns int32 is 
 our sub deflatePrime(z_stream, int32, int32) returns int32 is native('libz.so.1') is export { * }
 our sub deflateSetHeader(z_stream, gz_header) returns int32 is native('libz.so.1') is export { * }
 
-our sub inflateInit2_(z_stream, int32, int32) returns int32 is native('libz.so.1') { * }
+our sub inflateInit2_(z_stream, int32, Str is encoded('ascii'), int32) returns int32 is native('libz.so.1') { * }
 our sub inflateInit2(z_stream $strm, int32 $windowbits) is export {
-    return inflateInit2_($strm, $windowbits, 112);
+    return inflateInit2_($strm, $windowbits, ZLIB_VERSION, 112);
 }
 our sub inflateSetDictionary(z_stream, CArray[int8], int32) returns int32 is native('libz.so.1') is export { * }
 our sub inflateGetDictionary(z_stream, CArray[int8], CArray[int32]) returns int32 is native('libz.so.1') is export { * }
