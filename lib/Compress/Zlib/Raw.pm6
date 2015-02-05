@@ -174,12 +174,12 @@ our sub zlibCompileFlags() returns int is native($lib) is export { * }
 # utility functions
 
 #second argument is actually long*, but I don't know how to do a pointer to a long
-our sub compress(CArray[int8], CArray[int], CArray[int8], int) returns int32 is native($lib) is export { * }
-our sub compress2(CArray[int8], CArray[int], CArray[int8], int, int32) returns int32 is native($lib) is export { * }
+our sub compress(Blob, CArray[int], Blob, int) returns int32 is native($lib) is export { * }
+our sub compress2(Blob, CArray[int], Blob, int, int32) returns int32 is native($lib) is export { * }
 our sub compressBound(int) returns int is native($lib) is export { * }
 
 #second argument: see note above
-our sub uncompress(CArray[int8], CArray[int], CArray[int8], int) returns int32 is native($lib) is export { * }
+our sub uncompress(Blob, CArray[int], Blob, int) returns int32 is native($lib) is export { * }
 
 # gzip file access functions
 
