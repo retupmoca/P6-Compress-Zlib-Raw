@@ -9,6 +9,8 @@ BEGIN {
     if $*VM.config<dll> ~~ /dll/ {
         # we're on windows, different library name
         $lib = 'zlib1';
+    } elsif $*VM.config<dll> ~~ /so$/ {
+        $lib = 'libz.so.1';
     } else {
         $lib = 'libz';
     }
