@@ -1,4 +1,4 @@
-# P6::Compress::Zlib::Raw
+# Compress::Zlib::Raw
 
 [![Build Status](https://travis-ci.org/retupmoca/P6-Compress-Zlib-Raw.svg?branch=master)](https://travis-ci.org/retupmoca/P6-Compress-Zlib-Raw) [![Build status](https://ci.appveyor.com/api/projects/status/github/retupmoca/P6-Compress-Zlib-Raw?svg=true)](https://ci.appveyor.com/project/retupmoca/P6-Compress-Zlib-Raw/branch/master)
 
