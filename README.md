@@ -9,7 +9,7 @@ Note: This will probably only work on 64bit \*nix, due to hardcoded library name
 
 ##Example
 
-```
+```Perl6
 use v6;
 
 use Compress::Zlib::Raw;
